@@ -2,47 +2,65 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DiceShakerController : MonoBehaviour
 {
-  
-     [Header("Dice Settings")]
+    [Header("Dice Settings")]
     public Rigidbody[] dice;
     public float shakeThreshold = 1.5f;
     public float baseRollForce = 6f;
     public float maxRollForce = 12f;
 
+    [Header("Game Stats UI")]
+    public Text rollText;
+    public Text winText;
+    public GameObject winPopup;
+
     private Vector3 lastAccel;
     private float idleTime = 0f;
     private float shakeCooldown = 0f;
+    private bool hasShownResult = false;
+    private bool hasRolledAtLeastOnce = false;
+
+    private int totalWins = 0;
+    private int totalRolls = 0;
 
     void Start()
     {
-        Physics.gravity = Vector3.down * 9.81f; // Lock gravity regardless of phone orientation
+        Physics.gravity = Vector3.down * 9.81f;
         lastAccel = Input.acceleration;
+        UpdateStatsUI();
+        if (winPopup) winPopup.SetActive(false);
     }
 
     void Update()
     {
+#if UNITY_EDITOR
+        SimulateShakeWithKey();
+#else
         Vector3 currentAccel = Input.acceleration;
         float shake = (currentAccel - lastAccel).sqrMagnitude;
         lastAccel = currentAccel;
 
-        // Cooldown between shake bursts
         shakeCooldown -= Time.deltaTime;
-
         if (shake > shakeThreshold && shakeCooldown <= 0f)
         {
             float force = Mathf.Clamp(shake * baseRollForce, baseRollForce, maxRollForce);
             ApplyForceToDice(force);
-            shakeCooldown = 0.1f; // tiny delay to avoid over-spam
+            shakeCooldown = 0.1f;
         }
-
-        CheckIfDiceStopped();
-        
-#if UNITY_EDITOR
-        SimulateShakeWithKey();
 #endif
+        CheckIfDiceStopped();
+    }
+
+    void SimulateShakeWithKey()
+    {
+        if (Input.GetKey(KeyCode.Space))
+        {
+            float simulatedShake = Random.Range(2f, 5f);
+            ApplyForceToDice(simulatedShake);
+        }
     }
 
     void ApplyForceToDice(float force)
@@ -50,38 +68,37 @@ public class DiceShakerController : MonoBehaviour
         foreach (Rigidbody rb in dice)
         {
             rb.isKinematic = false;
-
-            Vector3 dir = new Vector3(
-                Random.Range(-1f, 1f),
-                Random.Range(1.5f, 2.5f),
-                Random.Range(-1f, 1f)
-            );
+            Vector3 dir = new Vector3(Random.Range(-1f, 1f), Random.Range(1.5f, 2.5f), Random.Range(-1f, 1f));
             rb.AddForce(dir * force, ForceMode.Impulse);
             rb.AddTorque(Random.insideUnitSphere * force, ForceMode.Impulse);
         }
 
         idleTime = 0f;
+        hasShownResult = false;
+        hasRolledAtLeastOnce = true;
+        if (winPopup) winPopup.SetActive(false);
     }
 
     void CheckIfDiceStopped()
     {
         bool allStopped = true;
-
         foreach (Rigidbody rb in dice)
         {
             if (rb.velocity.magnitude > 0.05f || rb.angularVelocity.magnitude > 0.05f)
             {
                 allStopped = false;
                 idleTime = 0f;
+                hasShownResult = false;
                 break;
             }
         }
 
-        if (allStopped)
+        if (allStopped && hasRolledAtLeastOnce)
         {
             idleTime += Time.deltaTime;
-            if (idleTime > 1f)
+            if (idleTime > 1f && !hasShownResult)
             {
+                hasShownResult = true;
                 ShowDiceResults();
             }
         }
@@ -89,25 +106,37 @@ public class DiceShakerController : MonoBehaviour
 
     void ShowDiceResults()
     {
-        string result = "Rolled: ";
+        int total = 0;
         for (int i = 0; i < dice.Length; i++)
         {
             int face = GetTopFace(dice[i].transform);
-            result += $"Dice {i + 1} = {face}  ";
+            total += face;
+            Debug.Log($"🎲 Dice: {i+1}, Face: {face}");
         }
 
-        Debug.Log(result);
+        totalRolls++;
+        if (total == 7)
+        {
+            totalWins++;
+            if (winPopup) winPopup.SetActive(true);
+        }
+
+        UpdateStatsUI();
+        Debug.Log($"🎲 Total = {total}, Rolls: {totalRolls}, Wins: {totalWins}");
+    }
+
+    void UpdateStatsUI()
+    {
+        if (rollText) rollText.text = $"Rolls: {totalRolls}";
+        if (winText) winText.text = $"Wins: {totalWins}";
     }
 
     int GetTopFace(Transform dice)
     {
         Vector3[] directions = {
-            dice.up,          // +Y → 6
-            -dice.up,         // -Y → 1
-            dice.right,       // +X → 3
-            -dice.right,      // -X → 4
-            dice.forward,     // +Z → 2
-            -dice.forward     // -Z → 5
+            dice.up, -dice.up,
+            dice.right, -dice.right,
+            dice.forward, -dice.forward
         };
 
         float maxDot = -1f;
@@ -122,21 +151,8 @@ public class DiceShakerController : MonoBehaviour
                 bestFace = i;
             }
         }
-       
 
         int[] faceMap = { 6, 1, 3, 4, 2, 5 };
         return faceMap[bestFace];
     }
-    void SimulateShakeWithKey()
-    {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            float simulatedShake = Random.Range(1f, 1f);
-            ApplyForceToDice(simulatedShake);
-        }
-    }
-    
-
-
-
 }
