@@ -22,6 +22,7 @@ public class DiceShakerController : MonoBehaviour
     private float shakeCooldown = 0f;
     private bool hasShownResult = false;
     private bool hasRolledAtLeastOnce = false;
+    private bool isAnimating = false;
 
     private int totalWins = 0;
     private int totalRolls = 0;
@@ -39,8 +40,10 @@ public class DiceShakerController : MonoBehaviour
     void Update()
     {
 #if UNITY_EDITOR
-        SimulateShakeWithKey();
+        if (!isAnimating)
+            SimulateShakeWithKey();
 #else
+        if(!isAnimating)
        SimulateShakeWithPhone(); 
 #endif
         CheckIfDiceStopped();
@@ -52,6 +55,7 @@ public class DiceShakerController : MonoBehaviour
         {
             float simulatedShake = Random.Range(2f, 5f);
             ApplyForceToDice(simulatedShake);
+
         }
     }
 
@@ -67,6 +71,7 @@ public class DiceShakerController : MonoBehaviour
             float force = Mathf.Clamp(shake * baseRollForce, baseRollForce, maxRollForce);
             ApplyForceToDice(force);
             shakeCooldown = 0.1f;
+
         }
     }
 
@@ -83,13 +88,6 @@ public class DiceShakerController : MonoBehaviour
         idleTime = 0f;
         hasShownResult = false;
         hasRolledAtLeastOnce = true;
-        if (winPopup)
-        {
-
-            VFX.ScaleDownCorutine(winPopup.gameObject, 0.3f);
-            winPopup.gameObject.SetActive(false);
-
-        }
     }
 
     void CheckIfDiceStopped()
@@ -109,7 +107,7 @@ public class DiceShakerController : MonoBehaviour
         if (allStopped && hasRolledAtLeastOnce)
         {
             idleTime += Time.deltaTime;
-            if (idleTime > 1f && !hasShownResult)
+            if (idleTime > 0.1f && !hasShownResult)
             {
                 hasShownResult = true;
                 ShowDiceResults();
@@ -127,14 +125,7 @@ public class DiceShakerController : MonoBehaviour
             Debug.Log($" Dice: {i + 1}, Face: {face}");
         }
 
-        if (winPopup)
-        {
-            winPopup.text = total.ToString();
-            VFX.ScaleUpCorutine(winPopup.gameObject, 0.2f, Vector3.one);
-            winPopup.gameObject.SetActive(true);
-
-        }
-
+     
         totalRolls++;
         if (total == 7)
         {
@@ -144,6 +135,12 @@ public class DiceShakerController : MonoBehaviour
 
         UpdateStatsUI();
         Debug.Log($"Total = {total}, Rolls: {totalRolls}, Wins: {totalWins}");
+
+        if (winPopup)
+        {
+            winPopup.text = total.ToString();
+            StartCoroutine(HandleWinPopupAnimation());
+        }
     }
 
     void UpdateStatsUI()
@@ -176,4 +173,27 @@ public class DiceShakerController : MonoBehaviour
         int[] faceMap = { 1, 6, 5, 2, 4, 3 };
         return faceMap[bestFace];
     }
+
+
+
+
+    IEnumerator HandleWinPopupAnimation()
+    {
+
+        winPopup.gameObject.SetActive(true);
+        isAnimating = true;
+
+        yield return StartCoroutine(VFX.ScaleUp(winPopup.gameObject, 0.2f, Vector3.one));
+
+        yield return new WaitForSeconds(1f);
+
+
+        yield return StartCoroutine(VFX.ScaleDown(winPopup.gameObject, 0.2f));
+
+
+        winPopup.gameObject.SetActive(false);
+        isAnimating = false;
+    }
+
+
 }
