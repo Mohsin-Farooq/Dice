@@ -769,7 +769,7 @@ MonoBehaviour:
   dice:
   - {fileID: 2054917162}
   - {fileID: 1677027450}
-  shakeThreshold: 0.1
+  shakeThreshold: 3
   baseRollForce: 6
   maxRollForce: 12
   rollText: {fileID: 1631332373}
@@ -1248,7 +1248,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6373185241920868301, guid: ad26bc1c591cd87469f3ba2b1d342de6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11.22
+      value: 11.492356
       objectReference: {fileID: 0}
     - target: {fileID: 6373185241920868301, guid: ad26bc1c591cd87469f3ba2b1d342de6, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1534,7 +1534,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6373185241920868301, guid: ad26bc1c591cd87469f3ba2b1d342de6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.737644
+      value: 10.01
       objectReference: {fileID: 0}
     - target: {fileID: 6373185241920868301, guid: ad26bc1c591cd87469f3ba2b1d342de6, type: 3}
       propertyPath: m_LocalPosition.y
