@@ -130,7 +130,7 @@ public class DiceShakerController : MonoBehaviour
         if (total == 7)
         {
             totalWins++;
-
+            AudioManager._instance.PlaySound("Clap");
         }
 
         UpdateStatsUI();
@@ -174,22 +174,16 @@ public class DiceShakerController : MonoBehaviour
         return faceMap[bestFace];
     }
 
-
-
-
     IEnumerator HandleWinPopupAnimation()
     {
-
         winPopup.gameObject.SetActive(true);
+       
         isAnimating = true;
 
         yield return StartCoroutine(VFX.ScaleUp(winPopup.gameObject, 0.2f, Vector3.one));
-
         yield return new WaitForSeconds(1f);
 
-
         yield return StartCoroutine(VFX.ScaleDown(winPopup.gameObject, 0.2f));
-
 
         winPopup.gameObject.SetActive(false);
         isAnimating = false;

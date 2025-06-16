@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4866815736227655479}
   - component: {fileID: 3735664152605996151}
   - component: {fileID: 5708283716978862485}
+  - component: {fileID: -2507090613560547515}
   m_Layer: 3
   m_Name: Dice
   m_TagString: Untagged
@@ -133,3 +134,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &-2507090613560547515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4140590877538782297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8da3a4730b0a9b64595cf01707fe7477, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
