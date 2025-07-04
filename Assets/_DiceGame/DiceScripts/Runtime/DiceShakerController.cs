@@ -122,7 +122,7 @@ public class DiceShakerController : MonoBehaviour
         {
             int face = GetTopFace(dice[i].transform);
             total += face;
-            Debug.Log($" Dice: {i + 1}, Face: {face}");
+           
         }
 
      
@@ -134,7 +134,7 @@ public class DiceShakerController : MonoBehaviour
         }
 
         UpdateStatsUI();
-        Debug.Log($"Total = {total}, Rolls: {totalRolls}, Wins: {totalWins}");
+       
 
         if (winPopup)
         {

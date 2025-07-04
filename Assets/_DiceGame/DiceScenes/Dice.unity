@@ -507,7 +507,7 @@ Transform:
   m_GameObject: {fileID: 570240168}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: -6.727219, y: 21.225163, z: -5.37}
+  m_LocalPosition: {x: -6.727219, y: 21.225163, z: -5.9}
   m_LocalScale: {x: 8.549968, y: 14.129713, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -982,7 +982,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
