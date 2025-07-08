@@ -132,7 +132,7 @@ namespace DiceGame
             if (total == 7)
             {
                 totalWins++;
-                AudioManager._instance.PlaySound("Clap");
+                DiceAudioManager._instance.PlaySound("Clap");
             }
 
             UpdateStatsUI();

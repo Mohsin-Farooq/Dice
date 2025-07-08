@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace DiceGame
 {
-    public class AudioManager : MonoBehaviour
+    public class DiceAudioManager : MonoBehaviour
     {
-        public static AudioManager _instance { get; private set; }
-        private readonly IAudioService _audioServiceProvider;
-        public AudioManager(IAudioService audioService)
+        public static DiceAudioManager _instance { get; private set; }
+        private readonly DiceIAudioService _audioServiceProvider;
+        public DiceAudioManager(DiceIAudioService audioService)
         {
             _audioServiceProvider = audioService;
             _instance = this;

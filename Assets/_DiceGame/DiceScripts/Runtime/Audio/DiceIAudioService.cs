@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DiceGame
 {
-    public interface IAudioService
+    public interface DiceIAudioService
     {
         public void PlaySounds(string soundName);
         public void StopSounds(string SoundName);

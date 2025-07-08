@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DiceGame
 {
-    public class AudioService : MonoBehaviour, IAudioService
+    public class DiceAudioService : MonoBehaviour, DiceIAudioService
     {
         [SerializeField] private AudioSource SoundSource;
         [SerializeField] private List<AudioClip> audioClips;
@@ -17,7 +17,7 @@ namespace DiceGame
             {
                 _AudioClipsDic[clips.name] = clips;
             }
-            new AudioManager(this);
+            new DiceAudioManager(this);
             MMVibrationManager.iOSInitializeHaptics();
         }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace DiceGame
 {
-    public class FPSManager : MonoBehaviour
+    public class DiceFPSManager : MonoBehaviour
     {
 #if UNITY_ANDROID
 

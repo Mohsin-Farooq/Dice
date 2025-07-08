@@ -12,7 +12,7 @@ namespace DiceGame
             if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
             {
                 MMVibrationManager.Haptic(HapticTypes.LightImpact);
-                AudioManager._instance.PlaySound("Dice");
+                DiceAudioManager._instance.PlaySound("Dice");
             }
         }
     }
