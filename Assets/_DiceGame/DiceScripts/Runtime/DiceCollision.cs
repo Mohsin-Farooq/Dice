@@ -3,14 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DiceCollision : MonoBehaviour
+namespace DiceGame
 {
-    private void OnCollisionEnter(Collision collision)
+    public class DiceCollision : MonoBehaviour
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
+        private void OnCollisionEnter(Collision collision)
         {
-            MMVibrationManager.Haptic(HapticTypes.LightImpact);
-            AudioManager._instance.PlaySound("Dice");
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
+            {
+                MMVibrationManager.Haptic(HapticTypes.LightImpact);
+                AudioManager._instance.PlaySound("Dice");
+            }
         }
     }
 }

@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IAudioService
+namespace DiceGame
 {
-    public void PlaySounds(string soundName);   
-    public void StopSounds(string SoundName);
+    public interface IAudioService
+    {
+        public void PlaySounds(string soundName);
+        public void StopSounds(string SoundName);
 
-    public void SetVolumn(float Volume);
+        public void SetVolumn(float Volume);
+    }
 }

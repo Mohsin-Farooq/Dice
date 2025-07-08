@@ -1,40 +1,38 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class TextVisualEffect : MonoBehaviour
+namespace DiceGame
 {
-
-
-
-
-    public IEnumerator ScaleUp(GameObject Text, float duration, Vector3 targetScale)
+    public class TextVisualEffect : MonoBehaviour
     {
-        float elapsed = 0f;
-        Vector3 startScale = Vector3.zero;
-
-        while (elapsed < duration)
+        public IEnumerator ScaleUp(GameObject Text, float duration, Vector3 targetScale)
         {
-            Text.transform.localScale = Vector3.Lerp(startScale, targetScale, elapsed / duration);
-            elapsed += Time.deltaTime;
-            yield return null;
+            float elapsed = 0f;
+            Vector3 startScale = Vector3.zero;
+
+            while (elapsed < duration)
+            {
+                Text.transform.localScale = Vector3.Lerp(startScale, targetScale, elapsed / duration);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+            Text.transform.localScale = targetScale;
         }
-        Text.transform.localScale = targetScale;
-    }
 
 
-    public IEnumerator ScaleDown(GameObject Text, float duration)
-    {
-        float elapsed = 0f;
-        Vector3 startScale = transform.localScale;
-        Vector3 targetScale = Vector3.zero;
-
-        while (elapsed < duration)
+        public IEnumerator ScaleDown(GameObject Text, float duration)
         {
-            Text.transform.localScale = Vector3.Lerp(startScale, targetScale, elapsed / duration);
-            elapsed += Time.deltaTime;
-            yield return null;
+            float elapsed = 0f;
+            Vector3 startScale = transform.localScale;
+            Vector3 targetScale = Vector3.zero;
+
+            while (elapsed < duration)
+            {
+                Text.transform.localScale = Vector3.Lerp(startScale, targetScale, elapsed / duration);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+            Text.transform.localScale = targetScale;
         }
-        Text.transform.localScale = targetScale;
     }
 }
